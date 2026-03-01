@@ -23,7 +23,6 @@ yarn-error.log
 # Server specific
 server/node_modules/
 server/temp-npm-cache/
-server/uploads/
 server/*.pem
 
 # Client specific
