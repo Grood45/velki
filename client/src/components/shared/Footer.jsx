@@ -16,7 +16,7 @@ const Footer = () => {
         <Link
           target="_blank"
           rel="noreferrer noopenner"
-          to="https://t.me/+fHC2LQO4BAg2MmRk"
+          to="https://t.me/"
         >
           <FaTelegram className="text-4xl" />
         </Link>
@@ -46,7 +46,7 @@ const Footer = () => {
         </Link>
       </div>
       <p className="text-[#6F8898] text-sm text-center">
-        © 2025 Oracle Technology LLC কপিরাইট। সমস্ত অধিকার সংরক্ষিত
+        © 2025 fastodds কপিরাইট। সমস্ত অধিকার সংরক্ষিত
       </p>
     </div>
   );
