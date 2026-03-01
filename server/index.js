@@ -98,22 +98,25 @@ async function run() {
     app.use("/home-controls", homeControlApi(homeControlsCollection));
     app.use("/bankings", bankingApi(bankingCollection));
 
+    // Serve React Frontend (Single Server Mode) AFTER API routes
+    const clientBuildPath = path.join(__dirname, "../client/dist");
+    app.use(express.static(clientBuildPath));
+
+    // Catch-all route for React Router MUST be the very last route
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(clientBuildPath, "index.html"));
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log("Connected to MongoDB!!!✅");
+
+    // Start the server ONLY after DB is connected and routes are set
+    app.listen(port, () => {
+      console.log(`Server is Running on PORT:🆗 ${port}`);
+    });
+
   } finally {
     // Leave client open for now (close manually if needed)
   }
 }
 run().catch(console.dir);
-
-// Serve React Frontend (Single Server Mode)
-const clientBuildPath = path.join(__dirname, "../client/dist");
-app.use(express.static(clientBuildPath));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(clientBuildPath, "index.html"));
-});
-
-app.listen(port, () => {
-  console.log(`Server is Running on PORT:🆗 ${port}`);
-});
