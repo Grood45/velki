@@ -1,0 +1,33 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Any top level node_modules (if any get created)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Server specific
+server/node_modules/
+server/temp-npm-cache/
+server/uploads/
+server/*.pem
+
+# Client specific
+client/node_modules/
+client/dist/
+client/build/
+client/.eslintcache
