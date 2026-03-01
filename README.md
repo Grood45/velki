@@ -62,9 +62,9 @@ These credentials give you full access to the system.
 
 ---
 
-## Deploying to AWS EC2 (Step-by-Step)
+## Deploying to AWS EC2 (Single App Setup)
 
-This guide explains how to host both the Backend (Node.js) and Frontend (Vite/React) on a single AWS EC2 instance using **PM2** (to keep the node server alive) and **Nginx** (to serve the React build and proxy API requests).
+This guide explains how to host both the Backend (Node.js) and Frontend (Vite/React) together as a **single application** on an AWS EC2 instance. The Express backend will serve the static React frontend files directly, so Nginx is only used as a simple reverse proxy.
 
 ### Step 1: Set up the AWS EC2 Instance
 1. Go to your AWS Console and launch a new **EC2 Instance** (Ubuntu 22.04 LTS is recommended).
@@ -114,29 +114,25 @@ Create the file: `nano client/.env`
 VITE_BASE_API_URL=http://your-ec2-ip:5001
 ```
 
-### Step 4: Build and Start the Application
+### Step 4: Build Frontend and Start Backend
 
-#### A. Start Backend (with PM2)
-PM2 will keep your backend running forever, even if the server restarts.
+Since the backend is configured to serve the frontend directly, you only need to run the Node.js server.
 ```bash
+# First, build the frontend
+cd ~/your-repo-folder/client
+npm install
+npm run build
+
+# Then, start the backend with PM2
 cd ~/your-repo-folder/server
 npm install
-pm2 start index.js --name "velki-backend"
+pm2 start index.js --name "velki-app"
 pm2 save
 pm2 startup
 ```
 
-#### B. Build Frontend
-Instead of running `npm run dev` on a live server, you need to build the static HTML files to serve them through Nginx.
-```bash
-cd ~/your-repo-folder/client
-npm install
-npm run build
-```
-The build files are now generated inside `client/dist`.
-
-### Step 5: Configure Nginx
-Nginx will expose port 80 (HTTP) to the public internet, serve your Vite build, and optionally proxy `/api` requests to your backend running on 5001.
+### Step 5: Configure Nginx (Reverse Proxy)
+Nginx will expose port 80 (HTTP) to the public internet and forward all traffic to your Node.js backend.
 
 1. Open the default Nginx config:
 ```bash
@@ -149,20 +145,9 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    # Point this to the absolute path of your client dist folder
-    root /home/ubuntu/your-repo-folder/client/dist;
-    index index.html index.htm index.nginx-debian.html;
-
     server_name _;
 
-    # Serve React Frontend and handle React Router
     location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    # Proxy API requests to Node Backend
-    # If your frontend hits port 5001 directly, you may not need this, but we recommend doing this to avoid CORS issues.
-    location /api/ {
         proxy_pass http://localhost:5001/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
