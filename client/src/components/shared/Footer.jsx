@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaTelegram, FaWhatsappSquare, FaFacebook } from "react-icons/fa";
+import { FaTelegram, FaWhatsappSquare } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -23,16 +23,9 @@ const Footer = () => {
         <Link
           target="_blank"
           rel="noreferrer noopenner"
-          to="https://wa.me/+33756757364"
+          to="https://wa.me/7982720942"
         >
           <FaWhatsappSquare className="text-4xl" />
-        </Link>
-        <Link
-          target="_blank"
-          rel="noreferrer noopenner"
-          to="https://www.facebook.com/oracletechnologyindia"
-        >
-          <FaFacebook className="text-4xl" />
         </Link>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-2">

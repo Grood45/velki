@@ -41,7 +41,7 @@ const MainLayout = () => {
       className="h-screen flex justify-center"
     >
       <Helmet>
-        <title>{`${title?.title || "***"}`} | Official</title>
+        <title>{`${title?.title || "Velki"}`} | Official</title>
         <link
           rel="icon"
           type="image/svg+xml"

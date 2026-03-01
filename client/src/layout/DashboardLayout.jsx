@@ -12,7 +12,7 @@ const DashboardLayout = () => {
   return (
     <div>
       <Helmet>
-        <title>{`${title?.title || "***"}`} | Official</title>
+        <title>{`${title?.title || "Velki"}`} | Official</title>
         <link
           rel="icon"
           type="image/svg+xml"
